@@ -9,20 +9,16 @@ for d in "$BASE_DIR"/*/; do
 done
 
 # O diretório RAIZ para todos os resultados
-ROOT_OUTPUT_DIR="results/ga"
+ROOT_OUTPUT_DIR="results/brkga"
 
 SEED=1234
-POP_FACTOR=3
-CROSSOVER=0.8
-MUT=0.25
-ELIT=0.1
-MAX_GENS=900
-TOURNAMENT=5
-STAG=200
-LOCAL_ITER=20
-TRIALS=30
+POP_FACTOR=2
+PE=0.2
+PM=0.1
+RHOE=0.8
+TRIALS=15
 
-EXECUTABLE="./ga/main.jl"
+EXECUTABLE="./brkga/main.jl"
 
 # Criar o diretório RAIZ de resultados, se não existir
 mkdir -p "$ROOT_OUTPUT_DIR"
@@ -142,13 +138,9 @@ for INPUT_DIR in "${INPUT_DIRS[@]}"; do
         julia --threads auto "$EXECUTABLE" --instance "$graph_file" \
             --seed "$SEED" \
             --pop_factor "$POP_FACTOR" \
-            --crossover_rate "$CROSSOVER" \
-            --mutation_rate "$MUT" \
-            --elitism_rate "$ELIT" \
-            --max_gen "$MAX_GENS" \
-            --tournament_size "$TOURNAMENT" \
-            --max_stagnation "$STAG" \
-            --ls_iter "$LOCAL_ITER" \
+            --pe "$PE" \
+            --pm "$PM" \
+            --rhoe "$RHOE" \
             --trials "$TRIALS" \
             --output "$output_file"
 

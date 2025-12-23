@@ -6,7 +6,7 @@ Data: 22 de dezembro de 2025
 using Random
 using Graphs
 
-include("greedy.jl")
+include("../greedy/greedy.jl")
 
 # Esse struct define um indivíduo (cromossomo)
 struct Individual
