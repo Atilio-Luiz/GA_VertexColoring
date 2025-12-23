@@ -3,6 +3,7 @@ using ArgParse
 using Random
 using CSV
 using DataFrames
+using Base.Threads
 
 include("ga.jl")
 
@@ -104,6 +105,9 @@ end
 
 # Função principal
 function main()
+
+    println("[INFO] Número de threads disponíveis: $(Threads.nthreads())")
+
     args = parse_command_line()
 
     instance            = args["instance"]
@@ -159,7 +163,6 @@ function main()
         df_row = DataFrame(trial = t, seed = trial_seed, graph = instance_name, n = nv(graph), m = ne(graph), density = density, bestFitness = chr.fitness, time_sec = elapsed_time)
         CSV.write(output_file, df_row; append = true)
     end
-
 end
 
 main()

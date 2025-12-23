@@ -1,7 +1,7 @@
 #=
 Algoritmo genético para o problema de coloração de vértices em grafos.
 Autor: Atílio Gomes Luiz
-Data: 21 de dezembro de 2025
+Data: 22 de dezembro de 2025
 =#
 using Random
 using Graphs
@@ -57,7 +57,6 @@ function evaluate!(population::Population, graph::SimpleGraph, fitness_function)
             _, max_color = fitness_function(graph, population[i].genome)
             population[i] = Individual(population[i].genome, max_color)
         end
-        
     end
 end
 

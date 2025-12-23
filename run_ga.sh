@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Diretórios
-# Um array com todos os diretórios de entrada
-INPUT_DIRS=(
-    "base/CUBIC"
-    "base/DIMACS"
-    "base/Harwell-Boeing"
-)
+# Acessa o diretório da base de grafos e suas subpastas
+BASE_DIR="base"
+
+INPUT_DIRS=()
+for d in "$BASE_DIR"/*/; do
+    INPUT_DIRS+=("$(realpath "$d")")
+done
 
 # O diretório RAIZ para todos os resultados
 ROOT_OUTPUT_DIR="results"
@@ -139,7 +139,7 @@ for INPUT_DIR in "${INPUT_DIRS[@]}"; do
 
         # Executar o algoritmo com os parâmetros especificados
         # 🚨 CORREÇÃO: Usar o EXECUTABLE e os parâmetros corretos para o seu novo algoritmo (ga-cpp)
-        julia "$EXECUTABLE" --instance "$graph_file" \
+        julia --threads auto "$EXECUTABLE" --instance "$graph_file" \
             --seed "$SEED" \
             --pop_factor "$POP_FACTOR" \
             --crossover_rate "$CROSSOVER" \
