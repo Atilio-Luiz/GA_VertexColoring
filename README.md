@@ -3,7 +3,7 @@ Algoritmos Genéticos para Coloração de Vértices em Grafos.
 - Esse projeto possui a implementação de um algoritmo genético baseado em permutação e um algoritmo genético de chaves aleatórias enviesadas implementado com a ajuda do pacote Metaheuristics.jl
 
 ## Requisitos
-Os programas foram desenvolvido na linguagem de programação Julia. Você deve ter a linguagem Julia insttalada na sua máquina e também deve ter os seguintes pacotes Julia instalados: 
+Os programas foram desenvolvidos na linguagem de programação Julia. Você deve ter a linguagem Julia instalada na sua máquina e também deve ter os seguintes pacotes Julia instalados: 
 - Graphs.jl
 - ArgParse.jl
 - CSV.jl
