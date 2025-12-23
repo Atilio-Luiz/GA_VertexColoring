@@ -28,7 +28,7 @@ struct GA_Parameters
     max_generations::Int
     tournament_size::Int
     max_stagnation::Int
-    local_search_rate::Float64
+    local_search_iter::Int
 end
 
 # Aqui eu estou definindo um tipo novo chamado "Population"
@@ -117,7 +117,7 @@ function random_vertex_weighted_by_degree(g::SimpleGraph, rng::Random.AbstractRN
         end
     end
 
-    return nv(g)  # fallback
+    return nv(g)
 end
 
 
@@ -182,7 +182,7 @@ end
 # Função que executa o GA 
 =#
 function run_ga(parameters::GA_Parameters, graph::SimpleGraph, seed::Int, fitness_function)
-    rng = MersenneTwister(seed * 17)
+    rng = MersenneTwister(seed)
     genome_length = nv(graph)
 
     # cria a população inicial e avalia o fitness de cada indivíduo
@@ -200,8 +200,8 @@ function run_ga(parameters::GA_Parameters, graph::SimpleGraph, seed::Int, fitnes
         elites = partialsort(population, 1:k)
 
         for i in 1:k        
-            if rand(rng) < parameters.local_search_rate
-                elites[i] = local_search_swap(elites[i], graph, fitness_function)
+            if rand(rng) < parameters.local_search_iter
+                elites[i] = local_search_swap(elites[i], graph, fitness_function, parameters.local_search_iter)
             end
         end
 
@@ -272,69 +272,3 @@ function mutate_pair_swap(ind::Individual, mutation_rate::Float64, rng::Random.A
     return Individual(genome, NaN)
 end
 
-
-
-#=
-# Função que executa o GA 
-=#
-#=
-function run_ga(parameters::GA_Parameters, graph::SimpleGraph, seed::Int, fitness_function)
-    rng = MersenneTwister(seed)
-    genome_length = nv(graph)
-
-    # cria a população inicial e avalia o fitness de cada indivíduo
-    population = init_population(parameters, genome_length, rng)
-    evaluate!(population, graph, fitness_function)
-    
-    counter::Int = 0
-    best_so_far::Individual = minimum(population)
-    best_fitness_per_gen = Vector{Float64}()
-
-    @inbounds for gen in 1:parameters.max_generations
-        new_pop = Population()
-
-        # realiza o elitismo
-        k::Int = max(1, ceil(Int, parameters.elitism_rate * length(population)))
-        
-        elites = partialsort(population, 1:k)
-        append!(new_pop, elites)
-
-        while length(new_pop) < parameters.pop_size
-            # seleciona dois progenitores por meio de torneio
-            p1 = tournament_selection(population, parameters.tournament_size, rng)
-            p2 = tournament_selection(population, parameters.tournament_size, rng)
-
-            # decide se realiza o cruzamento ou mantém o primeiro pai na solução
-            child = rand(rng) < parameters.crossover_rate ? 
-                one_point_order_crossover(p1,p2,rng) : Individual(copy(p1.genome), NaN)
-
-            # chama a função de mutação
-            child = mutate(child, parameters.mutation_rate, rng)
-            push!(new_pop, child)
-        end
-
-        # atualiza a população e avalia o fitness de cada cromossomo
-        population = new_pop
-        evaluate!(population, graph, fitness_function)
-
-        # calcula o melhor indivíduo da geração e atualiza as estatísticas 
-        best_in_iteration = minimum(population)
-        append!(best_fitness_per_gen, best_in_iteration.fitness)
-
-        # atualiza o melhor encontrado até agora e verifica a estagnação
-        if best_in_iteration.fitness < best_so_far.fitness
-            best_so_far = best_in_iteration 
-            counter = 0;
-        else
-            counter += 1
-        end
-        if counter >= parameters.max_stagnation
-            break
-        end 
-    end
-
-    # retorna o indivíduo com a melhor coloração e 
-    # retorna um vetor de estatísticas contendo o melhor fitness de cada geração
-    return best_so_far, best_fitness_per_gen
-end
-=#
