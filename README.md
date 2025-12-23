@@ -11,7 +11,7 @@ Você deve ter os seguintes pacotes Julia instalados:
 - Random.jl
 
 ## Execução
-Para executar o programa, digite no terminal do linux:
+Para executar o programa no Linux, digite no terminal:
 ```bash
 chmod +x run_ga.sh
 ./run_ga.sh
